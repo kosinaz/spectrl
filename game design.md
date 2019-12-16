@@ -13,8 +13,11 @@ As Arakhon, the despised oblityian dragonspawn, your goal is to reach Aligibaia,
 The game is rendered in two dimensions, width, and height. It displays the different levels of depth with brightnesses, the color with hues, the structure with characters, and the surface with typefaces. Lowercase characters are living beings, uppercase characters are impassable obstacles, and the dot represents the floor.
 
 Brightnesses: c0, a0, 80, 60
+
 Hues: light, red, green, blue
+
 Characters: a, e, i, o
+
 Typefaces: basicmanual, hack, smalltypewriting, typori
 
 Harder difficulties have additional levels.
