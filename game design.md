@@ -28,7 +28,7 @@ Every plane has its unique name starting with the character of the structure, fo
 
 Examples:
 
-A + ligth - th + i + basicmanual - sicmanual + ia/n = Aligibaia/aligbaian
+A + ligth - th + i + basicmanual - sicmanual + ia/n = Aligibaia/aligibaian
 
 E + red - ed + i + hack - ck + ia/n = Erihaia/erihaian
 
