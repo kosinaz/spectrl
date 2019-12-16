@@ -2,7 +2,7 @@
 
 ## Introduction
 
-SpectRL: Arakhon's Ascension is a browser-based retro fantasy roguelike turn-based RPG about a dragon spawn who wants to ascend to the highest plane of existence. The game is set in the multidimensional world of Spect, featuring procedurally-generated 6-dimensional dungeons.
+SpectRL: Arakhon's Ascension is a browser-based retro fantasy roguelike turn-based RPG about a dragonspawn who wants to ascend to the highest plane of existence. The game is set in the multidimensional world of Spect, featuring procedurally-generated 6-dimensional dungeons.
 
 ## Description
 
