@@ -1,6 +1,8 @@
-import {Display, RNG} from '../lib/rot/index.js';
+import {Display, RNG, Engine} from '../lib/rot/index.js';
 import DividedMaze from '../lib/rot/map/dividedmaze.js';
 import BacktrackerMaze from './backtrackermaze.js';
+import Simple from '../lib/rot/scheduler/simple.js';
+import Hero from './hero.js';
 
 const WIDTH = 55;
 const HEIGHT = 37;
@@ -90,21 +92,7 @@ maze.nodes.forEach((node, position) =>
     }
   }));
 
-const z = RNG.getUniformInt(0, 2);
-const a = RNG.getUniformInt(0, 2);
-const b = RNG.getUniformInt(0, 2);
-const c = RNG.getUniformInt(0, 2);
-const brightness = ['a', '8', '6'][z];
-const red = a === 0 ? brightness : '0';
-const green = a === 1 ? brightness : '0';
-const blue = a === 2 ? brightness : '0';
-const color = `#${red}${green}${blue}`;
-display.setOptions({
-  fontFamily: ['ba', 'sm', 'ty'][c],
-  bg: color,
-});
-for (let x = 0; x < WIDTH; x += 1) {
-  for (let y = 0; y < HEIGHT; y += 1) {
-    display.draw(x, y, map.get(`${x},${y},${z},${a},${b},${c}`), 'white');
-  }
-}
+const scheduler = new Simple();
+const engine = new Engine(scheduler);
+new Hero([1, 1, 2, 2, 2, 2], map, scheduler, engine, display);
+engine.start();
