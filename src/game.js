@@ -2,13 +2,14 @@ import {Display, RNG} from '../lib/rot/index.js';
 import DividedMaze from '../lib/rot/map/dividedmaze.js';
 import BacktrackerMaze from './backtrackermaze.js';
 
-const WIDTH = 91;
+const WIDTH = 55;
 const HEIGHT = 37;
-const CHAMBERWIDTH = 31;
+const CHAMBERWIDTH = 19;
 const CHAMBERHEIGHT = 13;
 const display = new Display({
-  width: WIDTH * 2 + 5,
+  width: WIDTH,
   height: HEIGHT,
+  forceSquareRatio: true,
 });
 document.body.appendChild(display.getContainer());
 
@@ -89,14 +90,21 @@ maze.nodes.forEach((node, position) =>
     }
   }));
 
+const z = RNG.getUniformInt(0, 2);
+const a = RNG.getUniformInt(0, 2);
+const b = RNG.getUniformInt(0, 2);
+const c = RNG.getUniformInt(0, 2);
+const brightness = ['a', '8', '6'][z];
+const red = a === 0 ? brightness : '0';
+const green = a === 1 ? brightness : '0';
+const blue = a === 2 ? brightness : '0';
+const color = `#${red}${green}${blue}`;
+display.setOptions({
+  fontFamily: ['ba', 'sm', 'ty'][c],
+  bg: color,
+});
 for (let x = 0; x < WIDTH; x += 1) {
   for (let y = 0; y < HEIGHT; y += 1) {
-    display.draw(x, y, map.get(`${x},${y},0,0,0,1`), 'gray');
-  }
-}
-
-for (let x = 0; x < WIDTH; x += 1) {
-  for (let y = 0; y < HEIGHT; y += 1) {
-    display.draw(x + WIDTH + 5, y, map.get(`${x},${y},0,0,0,2`), 'gray');
+    display.draw(x, y, map.get(`${x},${y},${z},${a},${b},${c}`), 'white');
   }
 }
