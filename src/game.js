@@ -32,6 +32,18 @@ maze.nodes.forEach((node, position) => {
     y += j * CHAMBERHEIGHT - j;
     map.set(`${x},${y},${position.substr(4)}`, value ? char : '.');
   });
+  if (position === '0,0,0,0,0,0' || position === '2,2,2,2,2,2') {
+    const p = position.split(',');
+    const i = +p[0];
+    const j = +p[1];
+    for (let x = 1; x < CHAMBERWIDTH - 1; x += 1) {
+      for (let y = 1; y < CHAMBERHEIGHT - 1; y += 1) {
+        const xi = i * CHAMBERWIDTH - i;
+        const yj = j * CHAMBERHEIGHT - j;
+        map.set(`${x + xi},${y + yj},${position.substr(4)}`, '.');
+      }
+    }
+  }
 });
 
 maze.nodes.forEach((node, position) =>
@@ -92,7 +104,66 @@ maze.nodes.forEach((node, position) =>
     }
   }));
 
-const scheduler = new Simple();
-const engine = new Engine(scheduler);
-new Hero([53, 35, 2, 2, 2, 2], map, scheduler, engine, display);
-engine.start();
+map.set('9,6,0,0,0,0', '^');
+
+display.drawText(
+    0,
+    0,
+    ` .                                                     .
+      .          ###  ###  ###  ###  ###  ##   #            .
+      .          #    # #  #    #     #   # #  #            .
+      .          ###  ###  ###  #     #   ##   #            .
+      .            #  #    #    #     #   # #  #            .
+      .          ###  #    ###  ###   #   # #  ###          .
+      .                                                     .
+      .                 Arakhon's Ascension                 .
+      .                                                     .
+      .                         .,..                        .
+      .                       ,*  .,.                       .
+      .                      *,%#,,*.                       .   
+      .  Start        *    ,,**//**,.                       .
+      .              //*   *,,,*/*,.                        .
+      .  Credits    /**        ,,,,.                        .
+      .             /**      ,,,,*****,                     .
+      .             /**, .**/((//(((*,,///*,                .
+      .             /*,,**,/##(((##(*,,*///*,.              .
+      .             **,,,,,*#((/((((*....,***,       */     .
+      .             .,..,,.,/(/**///,..  .**,.       (/*    .
+      .               ...    .,*,,*,,..   *,.         **.   .
+      .                       */****.,,, ,*,.        ,**.   .
+      .                       ,/****,.,,.     , */ / ***,   .
+      .                       ,****,,,,,,,,.,*/////*/**.    .
+      .                      **********,,.,,****///**,.     .
+      .                     ////***********/*,.,,,,,..      .
+      .                    ////*,******,.******.            .
+      .                   .*/*,,,,,,***,../**,..            .
+      .                   .**,.....,,**,...,*....           .
+      .                    ,,..    .,,,,..  ...,,..         .
+      .                    */*.     .,,,..    .,*.          .
+      .                     ((*     .*/*.     .,*..         .
+      .                     */*.   *.,/,.    .,**,.         .
+      .                  .,,,,..   * .,.,.   , *. .,        .
+      .                .,**,..       .,,.    . *   *        .
+      .                *  ,..       .,**,.                  .
+      .                            *  ,. ..                 .
+      `);
+
+let started = false;
+window.addEventListener('keydown', start);
+window.addEventListener('mousedown', start);
+
+/**
+ * Starts the game.
+ *
+ */
+function start() {
+  if (started) {
+    return;
+  }
+  started = true;
+  display.clear();
+  const scheduler = new Simple();
+  const engine = new Engine(scheduler);
+  new Hero([45, 30, 2, 2, 2, 2], map, scheduler, engine, display);
+  engine.start();
+}
