@@ -54,40 +54,40 @@ maze.nodes.forEach((node, position) =>
       x += ((+p[2] % 2) ^ direction) * ((CHAMBERWIDTH - 1) / 3 * 2);
       y += RNG.getUniformInt(0, (CHAMBERHEIGHT - 7) / 6) * 2 + 1;
       y += (CHAMBERHEIGHT - 1) / 3;
-      map.set(`${x},${y},${position.substr(4)}`, ['<', '>'][direction]);
+      map.set(`${x},${y},${position.substr(4)}`, ['>', '<'][direction]);
       map.set(
           `${x},${y},${+p[2] + (direction ? 1 : -1)},${p[3]},${p[4]},${p[5]}`,
-          ['>', '<'][direction],
+          ['<', '>'][direction],
       );
     } else if (dimension === 3) {
       x += RNG.getUniformInt(0, (CHAMBERWIDTH - 7) / 6) * 2 + 1;
       x += ((+p[3] % 2) ^ direction) * ((CHAMBERWIDTH - 1) / 3 * 2);
       y += RNG.getUniformInt(0, (CHAMBERHEIGHT - 7) / 6) * 2 + 1;
       y += ((+p[3] % 2) ^ direction) * ((CHAMBERHEIGHT - 1) / 3 * 2);
-      map.set(`${x},${y},${position.substr(4)}`, ['{', '}'][direction]);
+      map.set(`${x},${y},${position.substr(4)}`, ['}', '{'][direction]);
       map.set(
           `${x},${y},${p[2]},${+p[3] + (direction ? 1 : -1)},${p[4]},${p[5]}`,
-          ['}', '{'][direction],
+          ['{', '}'][direction],
       );
     } else if (dimension === 4) {
       x += RNG.getUniformInt(0, (CHAMBERWIDTH - 7) / 6) * 2 + 1;
       x += (CHAMBERWIDTH - 1) / 3;
       y += RNG.getUniformInt(0, (CHAMBERHEIGHT - 7) / 6) * 2 + 1;
       y += ((+p[4] % 2) ^ direction) * ((CHAMBERHEIGHT - 1) / 3 * 2);
-      map.set(`${x},${y},${position.substr(4)}`, ['[', ']'][direction]);
+      map.set(`${x},${y},${position.substr(4)}`, [']', '['][direction]);
       map.set(
           `${x},${y},${p[2]},${p[3]},${+p[4] + (direction ? 1 : -1)},${p[5]}`,
-          [']', '['][direction],
+          ['[', ']'][direction],
       );
     } else if (dimension === 5) {
       x += RNG.getUniformInt(0, (CHAMBERWIDTH - 7) / 6) * 2 + 1;
       x += (1 ^ (+p[5] % 2) ^ direction) * ((CHAMBERWIDTH - 1) / 3 * 2);
       y += RNG.getUniformInt(0, (CHAMBERHEIGHT - 7) / 6) * 2 + 1;
       y += ((+p[5] % 2) ^ direction) * ((CHAMBERHEIGHT - 1) / 3 * 2);
-      map.set(`${x},${y},${position.substr(4)}`, ['(', ')'][direction]);
+      map.set(`${x},${y},${position.substr(4)}`, [')', '('][direction]);
       map.set(
           `${x},${y},${p[2]},${p[3]},${p[4]},${+p[5] + (direction ? 1 : -1)}`,
-          [')', '('][direction],
+          ['(', ')'][direction],
       );
     }
   }));

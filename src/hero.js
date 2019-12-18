@@ -74,21 +74,21 @@ export default class Hero extends Actor {
         this.display.draw(+p[0], +p[1], this.map.get(position), '#444', '#000');
       }
     });
-    const brightness = ['a', '8', '6'][this.position[2]];
-    const red = this.position[3] === 0 ? brightness : '0';
-    const green = this.position[3] === 1 ? brightness : '0';
-    const blue = this.position[3] === 2 ? brightness : '0';
+    const brightness = ['a', '8', '6'][this.z];
+    const red = this.a === 0 ? brightness : '0';
+    const green = this.a === 1 ? brightness : '0';
+    const blue = this.a === 2 ? brightness : '0';
     const color = `#${red}${green}${blue}`;
     this.display.setOptions({
-      fontFamily: ['ba', 'sm', 'ty'][this.position[5]],
+      fontFamily: ['ba', 'sm', 'ty'][this.c],
     });
-    this.fov.compute(this.position[0], this.position[1], 11, (x, y) => {
+    this.fov.compute(this.x, this.y, 11, (x, y) => {
       const position = `${x},${y},${this.z},${this.a},${this.b},${this.c}`;
       const char = this.map.get(position);
       this.explored.add(position);
       this.display.draw(x, y, char, '#fff', color);
     });
-    this.display.draw(this.position[0], this.position[1], '@', '#fff', color);
+    this.display.draw(this.x, this.y, '@', '#fff', color);
     this.engine.lock();
     if (this.mouseDown && this.target) {
       setTimeout(this.moveToTargetAndUnlock.bind(this), 100);
@@ -116,12 +116,59 @@ export default class Hero extends Actor {
     }
     if (e.type === 'keydown') {
       if (this.keys[e.keyCode] === undefined) {
-        return;
+        if (e.keyCode === 13) {
+          const char = this.map.get(this.position.toString());
+          if (char === '<') {
+            this.z += 1;
+            this.display.clear();
+            this.engine.unlock();
+            return;
+          } else if (char === '>') {
+            this.z -= 1;
+            this.display.clear();
+            this.engine.unlock();
+            console.log(this.z);
+            return;
+          } else if (char === '{') {
+            this.a += 1;
+            this.display.clear();
+            this.engine.unlock();
+            return;
+          } else if (char === '}') {
+            this.a -= 1;
+            this.display.clear();
+            this.engine.unlock();
+            return;
+          } else if (char === '[') {
+            this.b += 1;
+            this.display.clear();
+            this.engine.unlock();
+            return;
+          } else if (char === ']') {
+            this.b -= 1;
+            this.display.clear();
+            this.engine.unlock();
+            return;
+          } else if (char === '(') {
+            this.c += 1;
+            this.display.clear();
+            this.engine.unlock();
+            return;
+          } else if (char === ')') {
+            this.c -= 1;
+            this.display.clear();
+            this.engine.unlock();
+            return;
+          }
+        } else {
+          return;
+        }
+      } else {
+        this.target = [
+          this.position[0] + DIRS[8][this.keys[e.keyCode]][0],
+          this.position[1] + DIRS[8][this.keys[e.keyCode]][1],
+        ];
       }
-      this.target = [
-        this.position[0] + DIRS[8][this.keys[e.keyCode]][0],
-        this.position[1] + DIRS[8][this.keys[e.keyCode]][1],
-      ];
     }
     this.moveToTargetAndUnlock();
   }

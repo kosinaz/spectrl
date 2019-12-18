@@ -93,6 +93,66 @@ export default class Actor {
   }
 
   /**
+   * Set the x coordinate of the actor.
+   *
+   * @param {number} n
+   * @memberof Actor
+   */
+  set x(n) {
+    this.position[0] = n;
+  }
+
+  /**
+   * Set the y coordinate of the actor.
+   *
+   * @param {number} n
+   * @memberof Actor
+   */
+  set y(n) {
+    this.position[1] = n;
+  }
+
+  /**
+   * Set the z coordinate of the actor.
+   *
+   * @param {number} n
+   * @memberof Actor
+   */
+  set z(n) {
+    this.position[2] = n;
+  }
+
+  /**
+   * Set the a coordinate of the actor.
+   *
+   * @param {number} n
+   * @memberof Actor
+   */
+  set a(n) {
+    this.position[3] = n;
+  }
+
+  /**
+   * Set the b coordinate of the actor.
+   *
+   * @param {number} n
+   * @memberof Actor
+   */
+  set b(n) {
+    this.position[4] = n;
+  }
+
+  /**
+   * Set the c coordinate of the actor.
+   *
+   * @param {number} n
+   * @memberof Actor
+   */
+  set c(n) {
+    this.position[5] = n;
+  }
+
+  /**
    * Moves the actor towards the target.
    *
    * @return {boolean} Returns true if the action was successful.
