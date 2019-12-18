@@ -127,7 +127,6 @@ export default class Hero extends Actor {
             this.z -= 1;
             this.display.clear();
             this.engine.unlock();
-            console.log(this.z);
             return;
           } else if (char === '{') {
             this.a += 1;

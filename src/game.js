@@ -94,5 +94,5 @@ maze.nodes.forEach((node, position) =>
 
 const scheduler = new Simple();
 const engine = new Engine(scheduler);
-new Hero([1, 1, 2, 2, 2, 2], map, scheduler, engine, display);
+new Hero([53, 35, 2, 2, 2, 2], map, scheduler, engine, display);
 engine.start();
