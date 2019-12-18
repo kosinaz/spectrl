@@ -23,6 +23,7 @@ export default class Hero extends Actor {
   constructor(position, map, scheduler, engine, display) {
     super(position, map, scheduler);
     this.char = '@';
+    this.explored = new Set();
     this.fov = new PreciseShadowcasting(this.isTransparent.bind(this));
     this.engine = engine;
     this.display = display;
@@ -62,6 +63,17 @@ export default class Hero extends Actor {
    * @memberof Hero
    */
   act() {
+    this.explored.forEach((position) => {
+      const p = position.split(',');
+      if (
+        +p[2] === this.z &&
+        +p[3] === this.a &&
+        +p[4] === this.b &&
+        +p[5] === this.c
+      ) {
+        this.display.draw(+p[0], +p[1], this.map.get(position), '#444', '#000');
+      }
+    });
     const brightness = ['a', '8', '6'][this.position[2]];
     const red = this.position[3] === 0 ? brightness : '0';
     const green = this.position[3] === 1 ? brightness : '0';
@@ -69,14 +81,14 @@ export default class Hero extends Actor {
     const color = `#${red}${green}${blue}`;
     this.display.setOptions({
       fontFamily: ['ba', 'sm', 'ty'][this.position[5]],
-      bg: color,
     });
-    this.fov.compute(this.position[0], this.position[1], 10, (x, y) => {
-      const char =
-        this.map.get(`${x},${y},${this.z},${this.a},${this.b},${this.c}`);
-      this.display.draw(x, y, char);
+    this.fov.compute(this.position[0], this.position[1], 11, (x, y) => {
+      const position = `${x},${y},${this.z},${this.a},${this.b},${this.c}`;
+      const char = this.map.get(position);
+      this.explored.add(position);
+      this.display.draw(x, y, char, '#fff', color);
     });
-    this.display.draw(this.position[0], this.position[1], '@');
+    this.display.draw(this.position[0], this.position[1], '@', '#fff', color);
     this.engine.lock();
     if (this.mouseDown && this.target) {
       setTimeout(this.moveToTargetAndUnlock.bind(this), 100);
