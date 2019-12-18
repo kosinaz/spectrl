@@ -1,3 +1,5 @@
+![main](https://raw.githubusercontent.com/kosinaz/spectrl/master/misc/menu.png)
+
 # SpectRL: Arakhon's Ascension
 
 SpectRL: Arakhon's Ascension is a browser-based retro fantasy roguelike turn-based RPG about a dragonspawn who wants to ascend to the highest plane of existence. The game is set in the multidimensional world of Spect, featuring procedurally-generated 6-dimensional dungeons.
