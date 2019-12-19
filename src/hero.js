@@ -45,7 +45,7 @@ export default class Hero extends Actor {
     this.keys[KEYS.VK_NUMPAD4] = 6;
     this.keys[KEYS.VK_NUMPAD7] = 7;
     this.mouseDown = false;
-    this.music = new Audio('../music/unprepared.ogg');
+    this.music = new Audio('./music/unprepared.ogg');
     this.music.loop = true;
     this.music.play();
     window.addEventListener('keydown', this);

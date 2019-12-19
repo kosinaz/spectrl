@@ -205,7 +205,6 @@ function menu() {
  *
  */
 function start() {
-  //music.play();
   screen = 'game';
   if (started) {
     return;
