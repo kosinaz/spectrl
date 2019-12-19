@@ -193,9 +193,9 @@ function menu() {
           .                    */*.     .,,,..    .,*.          .
           .                     ((*     .*/*.     .,*..         .
           .                     */*.   *.,/,.    .,**,.         .
-          .                  .,,,,..   * .,.,.   , *. .,        .
+          . Made for the     .,,,,..   * .,.,.   , *. .,        .
           .                .,**,..       .,,.    . *   *        .
-          .                *  ,..       .,**,.                  .
+          . TEXT ONLY JAM  *  ,..       .,**,.                  .
           .                            *  ,. ..                 .
           `);
 }
@@ -205,6 +205,7 @@ function menu() {
  *
  */
 function start() {
+  music.play();
   screen = 'game';
   if (started) {
     return;
@@ -274,4 +275,26 @@ function credits() {
   display.drawText(3, 12, 'Start');
   display.drawText(3, 14, 'Help');
   display.drawText(3, 16, 'Credits');
+  display.drawText(12, 3, `Code and ASCII art
+
+    Zoltan Kosina 
+    Licensed under the Unlicense
+  
+
+    Code Toolkit
+
+    rot.js ©2012-2019 Ondrej Zara
+    Licensed under the BSD 3-Clause 
+    "New" or "Revised" License
+  
+
+    Music
+
+    Unprepared ©2019 Joshua McLean 
+    (mrjoshuamclean.com)
+    Licensed under Creative Commons 
+    Attribution 4.0 International`);
 }
+
+const music = new Audio('../music/unprepared.ogg');
+music.loop = true;
