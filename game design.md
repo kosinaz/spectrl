@@ -6,7 +6,7 @@ SpectRL: Arakhon's Ascension is a browser-based retro fantasy roguelike turn-bas
 
 ## Description
 
-As Arakhon, the despised oblityian dragonspawn, your goal is to reach Aribaia, the highest plane of Spect. In addition to width, height, and depth, the world of Spect also has the dimensions of the color spectrum, the substantial structure, and the substantial surface. Therefore everything and everyone has a number of different versions in this world. Every version of them has a different structure, surface, and color, but deep inside, they are still the same. So keep in mind, animate or inanimate, some of them will help you, some of them will hurt you, based on which plane they are on.
+As Arakhon, the despised ciblityian dragonspawn, your goal is to reach Aribaia, the highest plane of Spect. In addition to width, height, and depth, the world of Spect also has the dimensions of the color spectrum, the substantial structure, and the substantial surface. Therefore everything and everyone has a number of different versions in this world. Every version of them has a different structure, surface, and color, but deep inside, they are still the same. So keep in mind, animate or inanimate, some of them will help you, some of them will hurt you, based on which plane they are on.
 
 ### Dimensions
 
