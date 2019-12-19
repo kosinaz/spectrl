@@ -45,6 +45,9 @@ export default class Hero extends Actor {
     this.keys[KEYS.VK_NUMPAD4] = 6;
     this.keys[KEYS.VK_NUMPAD7] = 7;
     this.mouseDown = false;
+    this.music = new Audio('../music/unprepared.ogg');
+    this.music.loop = true;
+    this.music.play();
     window.addEventListener('keydown', this);
     window.addEventListener('mousedown', this);
     window.addEventListener('mouseup', this);
@@ -82,6 +85,7 @@ export default class Hero extends Actor {
       this.display.draw(x, y, char, '#fff', color);
     });
     this.display.draw(this.x, this.y, '@', '#fff', color);
+    this.display.draw(54, 0, this.music.muted ? '-' : '~', '#fff', '#000');
     this.engine.lock();
     if (this.mouseDown && this.target) {
       setTimeout(this.moveToTargetAndUnlock.bind(this), 100);
@@ -104,15 +108,31 @@ export default class Hero extends Actor {
       return;
     }
     if (e.type === 'mousedown') {
-      this.target = [
-        this.display.eventToPosition(e)[0],
-        this.display.eventToPosition(e)[1],
-      ];
+      const x = this.display.eventToPosition(e)[0];
+      const y = this.display.eventToPosition(e)[1];
+      if (x === 54 && y === 0) {
+        this.music.muted = !this.music.muted;
+        this.display.draw(
+            54,
+            0,
+            this.music.muted ? '-' : '~', '#fff', '#000',
+        );
+        return;
+      }
+      this.target = [x, y];
       this.mouseDown = true;
     }
     if (e.type === 'keydown') {
       if (this.keys[e.keyCode] === undefined) {
-        if (e.keyCode === 13) {
+        if (e.keyCode === 109 || e.keyCode === 189) {
+          this.music.muted = !this.music.muted;
+          this.display.draw(
+              54,
+              0,
+              this.music.muted ? '-' : '~', '#fff', '#000',
+          );
+          return;
+        } else if (e.keyCode === 13) {
           const char = this.map.get(this.position.toString());
           if (char === '<') {
             this.z += 1;
@@ -192,7 +212,7 @@ export default class Hero extends Actor {
     this.display.drawText(
         0,
         0,
-        `.%#*,,****//**,,,,,,,............................     .
+        ` .%#*,,****//**,,,,,,,............................     .
           .#**//*,,,,*,,,*,,.................CONGRATULATIONS!   .
           .(*//*,**/***,.,,,,,,,,.............                  .
           .*,*/,,,,**//*,..,*****/**,,...Arakhon ascended to the.

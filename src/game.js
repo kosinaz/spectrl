@@ -205,7 +205,7 @@ function menu() {
  *
  */
 function start() {
-  music.play();
+  //music.play();
   screen = 'game';
   if (started) {
     return;
@@ -238,15 +238,13 @@ function help() {
     the world of Spect also has the dimensions 
     of the color spectrum, the substantial 
     structure, and the substantial surface. 
-    Therefore everything and everyone has a 
-    number of different versions in this 
-    world.
-    Every version of them has a different 
-    structure, surface, and color, but deep 
-    inside, they are still the same. So keep 
-    in mind, animate or inanimate, some of 
-    them will help you, some of them will hurt 
-    you, based on which plane they are on.
+    Therefore everything and everyone in this 
+    world has a different structure, surface, 
+    and color, but deep inside, they are still 
+    the same. So keep in mind, animate or 
+    inanimate, some of them will help you, 
+    some of them will hurt you, based on which 
+    plane they are on.
 
     The game is rendered in two dimensions, 
     width, and height. It displays the 
@@ -260,8 +258,9 @@ function help() {
 
     Controls
     
-    Move/attack with arrow/num/wasd keys.
-    Move upstairs/downstairs with enter.`);
+    Move/attack with mouse/arrow/num/wasd.
+    Move upstairs/downstairs with enter.
+    Mute/unmute the music with minus.`);
 }
 
 /**
@@ -295,6 +294,3 @@ function credits() {
     Licensed under Creative Commons 
     Attribution 4.0 International`);
 }
-
-const music = new Audio('../music/unprepared.ogg');
-music.loop = true;
