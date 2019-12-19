@@ -54,7 +54,7 @@ export default class WorldScene extends Scene {
           const actor = this.world.actors.find((actor) => actor.isAt(position));
           if (actor) {
             char = actor.char;
-            actor.target = [this.x, this.y];
+            actor.target = [this.world.hero.x, this.world.hero.y];
           }
           if (this.world.hero.isAt(position)) {
             char = '@';
