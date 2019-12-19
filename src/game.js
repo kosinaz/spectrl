@@ -106,57 +106,106 @@ maze.nodes.forEach((node, position) =>
 
 map.set('9,6,0,0,0,0', '^');
 
-display.drawText(
-    0,
-    0,
-    ` .                                                     .
-      .          ###  ###  ###  ###  ###  ##   #            .
-      .          #    # #  #    #     #   # #  #            .
-      .          ###  ###  ###  #     #   ##   #            .
-      .            #  #    #    #     #   # #  #            .
-      .          ###  #    ###  ###   #   # #  ###          .
-      .                                                     .
-      .                 Arakhon's Ascension                 .
-      .                                                     .
-      .                         .,..                        .
-      .                       ,*  .,.                       .
-      .                      *,%#,,*.                       .   
-      .  Start        *    ,,**//**,.                       .
-      .              //*   *,,,*/*,.                        .
-      .  Credits    /**        ,,,,.                        .
-      .             /**      ,,,,*****,                     .
-      .             /**, .**/((//(((*,,///*,                .
-      .             /*,,**,/##(((##(*,,*///*,.              .
-      .             **,,,,,*#((/((((*....,***,       */     .
-      .             .,..,,.,/(/**///,..  .**,.       (/*    .
-      .               ...    .,*,,*,,..   *,.         **.   .
-      .                       */****.,,, ,*,.        ,**.   .
-      .                       ,/****,.,,.     , */ / ***,   .
-      .                       ,****,,,,,,,,.,*/////*/**.    .
-      .                      **********,,.,,****///**,.     .
-      .                     ////***********/*,.,,,,,..      .
-      .                    ////*,******,.******.            .
-      .                   .*/*,,,,,,***,../**,..            .
-      .                   .**,.....,,**,...,*....           .
-      .                    ,,..    .,,,,..  ...,,..         .
-      .                    */*.     .,,,..    .,*.          .
-      .                     ((*     .*/*.     .,*..         .
-      .                     */*.   *.,/,.    .,**,.         .
-      .                  .,,,,..   * .,.,.   , *. .,        .
-      .                .,**,..       .,,.    . *   *        .
-      .                *  ,..       .,**,.                  .
-      .                            *  ,. ..                 .
-      `);
-
 let started = false;
-window.addEventListener('keydown', start);
-window.addEventListener('mousedown', start);
+let screen = '';
+let selected = 0;
+menu();
+
+window.addEventListener('keydown', (e) => {
+  if (screen === 'menu') {
+    display.draw(2, 12, ' ');
+    display.draw(2, 14, ' ');
+    display.draw(2, 16, ' ');
+    if (e.keyCode === 40 && selected < 2) {
+      selected += 1;
+    } else if (e.keyCode === 38 && selected > 0) {
+      selected -= 1;
+    } else if (e.keyCode === 13) {
+      if (selected === 0) {
+        start();
+      } else if (selected === 1) {
+        help();
+      } else if (selected === 2) {
+        credits();
+      }
+      return;
+    }
+    display.draw(2, 12 + selected * 2, '>');
+  } else if (screen === 'help' || screen === 'credits') {
+    menu();
+  }
+});
+window.addEventListener('mousedown', (e) => {
+  const x = display.eventToPosition(e)[0];
+  const y = display.eventToPosition(e)[1];
+  if (x > 2) {
+    if (x < 8 && y === 12) {
+      start();
+    } else if (x < 7 && y === 14) {
+      help();
+    } else if (x < 10 && y === 16) {
+      credits();
+    }
+  }
+});
+
+/**
+ * Displays the menu.
+ *
+ */
+function menu() {
+  screen = 'menu';
+  selected = 0;
+  display.clear();
+  display.drawText(
+      0,
+      0,
+      ` .                                                     .
+          .          ###  ###  ###  ###  ###  ##   #            .
+          .          #    # #  #    #     #   # #  #            .
+          .          ###  ###  ###  #     #   ##   #            .
+          .            #  #    #    #     #   # #  #            .
+          .          ###  #    ###  ###   #   # #  ###          .
+          .                                                     .
+          .                 Arakhon's Ascension                 .
+          .                                                     .
+          .                         .,..                        .
+          .                       ,*  .,.                       .
+          .                      *,%#,,*.                       .   
+          . >Start        *    ,,**//**,.                       .
+          .              //*   *,,,*/*,.                        .
+          .  Help       /**        ,,,,.                        .
+          .             /**      ,,,,*****,                     .
+          .  Credits    /**, .**/((//(((*,,///*,                .
+          .             /*,,**,/##(((##(*,,*///*,.              .
+          .             **,,,,,*#((/((((*....,***,       */     .
+          .             .,..,,.,/(/**///,..  .**,.       (/*    .
+          .               ...    .,*,,*,,..   *,.         **.   .
+          .                       */****.,,, ,*,.        ,**.   .
+          .                       ,/****,.,,.     , */ / ***,   .
+          .                       ,****,,,,,,,,.,*/////*/**.    .
+          .                      **********,,.,,****///**,.     .
+          .                     ////***********/*,.,,,,,..      .
+          .                    ////*,******,.******.            .
+          .                   .*/*,,,,,,***,../**,..            .
+          .                   .**,.....,,**,...,*....           .
+          .                    ,,..    .,,,,..  ...,,..         .
+          .                    */*.     .,,,..    .,*.          .
+          .                     ((*     .*/*.     .,*..         .
+          .                     */*.   *.,/,.    .,**,.         .
+          .                  .,,,,..   * .,.,.   , *. .,        .
+          .                .,**,..       .,,.    . *   *        .
+          .                *  ,..       .,**,.                  .
+          .                            *  ,. ..                 .
+          `);
+}
 
 /**
  * Starts the game.
  *
  */
 function start() {
+  screen = 'game';
   if (started) {
     return;
   }
@@ -166,4 +215,63 @@ function start() {
   const engine = new Engine(scheduler);
   new Hero([45, 30, 2, 2, 2, 2], map, scheduler, engine, display);
   engine.start();
+}
+
+/**
+ * Displays help.
+ *
+ */
+function help() {
+  screen = 'help';
+  display.clear();
+  display.drawText(25, 1, 'Help');
+  display.drawText(3, 12, 'Start');
+  display.drawText(3, 14, 'Help');
+  display.drawText(3, 16, 'Credits');
+  display.drawText(12, 3, `Desription
+
+    As Arakhon, the despised ciblityian
+    dragonspawn, your goal is to reach 
+    Aribaia, the highest plane of Spect.
+    In addition to width, height, and depth, 
+    the world of Spect also has the dimensions 
+    of the color spectrum, the substantial 
+    structure, and the substantial surface. 
+    Therefore everything and everyone has a 
+    number of different versions in this 
+    world.
+    Every version of them has a different 
+    structure, surface, and color, but deep 
+    inside, they are still the same. So keep 
+    in mind, animate or inanimate, some of 
+    them will help you, some of them will hurt 
+    you, based on which plane they are on.
+
+    The game is rendered in two dimensions, 
+    width, and height. It displays the 
+    different levels of depth with 
+    brightnesses, the color with hues, the 
+    structure with characters, and the surface 
+    with typefaces. Lowercase characters are 
+    living beings, uppercase characters are 
+    impassable obstacles, and the dot 
+    represents the floor.
+
+    Controls
+    
+    Move/attack with arrow/num/wasd keys.
+    Move upstairs/downstairs with enter.`);
+}
+
+/**
+ * Starts the game.
+ *
+ */
+function credits() {
+  screen = 'credits';
+  display.clear();
+  display.drawText(23, 1, 'Credits');
+  display.drawText(3, 12, 'Start');
+  display.drawText(3, 14, 'Help');
+  display.drawText(3, 16, 'Credits');
 }
