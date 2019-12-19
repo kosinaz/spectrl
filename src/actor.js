@@ -11,16 +11,15 @@ export default class Actor {
   /**
    * Creates an instance of Actor.
    *
-   * @param {number[]} position The coordinates of the actor's start position.
-   * @param {Map} map
-   * @param {Scheduler} scheduler
+   * @param {World} world The world of the actor.
+   * @param {string} position The actor's position as a comma separated string.
    * @memberof Actor
    */
-  constructor(position, map, scheduler) {
-    this.position = position;
-    this.char = ['a', 'b', 'c'][position[4]];
-    this.map = map;
-    scheduler.add(this, true);
+  constructor(world, position) {
+    this.world = world;
+    this.pos = position.split(',');
+    this.char = ['a', 'b', 'c'][this.b];
+    this.world.scheduler.add(this, true);
   }
 
   /**
@@ -29,7 +28,8 @@ export default class Actor {
    * @memberof Actor
    */
   act() {
-
+    console.log(this.target);
+    this.moveToTarget();
   }
 
   /**
@@ -39,7 +39,7 @@ export default class Actor {
    * @memberof Actor
    */
   get x() {
-    return this.position[0];
+    return +this.pos[0];
   }
 
   /**
@@ -49,7 +49,7 @@ export default class Actor {
    * @memberof Actor
    */
   get y() {
-    return this.position[1];
+    return +this.pos[1];
   }
 
   /**
@@ -59,7 +59,7 @@ export default class Actor {
    * @memberof Actor
    */
   get z() {
-    return this.position[2];
+    return +this.pos[2];
   }
 
   /**
@@ -69,7 +69,7 @@ export default class Actor {
    * @memberof Actor
    */
   get a() {
-    return this.position[3];
+    return +this.pos[3];
   }
 
   /**
@@ -79,7 +79,7 @@ export default class Actor {
    * @memberof Actor
    */
   get b() {
-    return this.position[4];
+    return +this.pos[4];
   }
 
   /**
@@ -89,7 +89,7 @@ export default class Actor {
    * @memberof Actor
    */
   get c() {
-    return this.position[5];
+    return +this.pos[5];
   }
 
   /**
@@ -99,7 +99,7 @@ export default class Actor {
    * @memberof Actor
    */
   set x(n) {
-    this.position[0] = n;
+    this.pos[0] = n;
   }
 
   /**
@@ -109,7 +109,7 @@ export default class Actor {
    * @memberof Actor
    */
   set y(n) {
-    this.position[1] = n;
+    this.pos[1] = n;
   }
 
   /**
@@ -119,7 +119,7 @@ export default class Actor {
    * @memberof Actor
    */
   set z(n) {
-    this.position[2] = n;
+    this.pos[2] = n;
   }
 
   /**
@@ -129,7 +129,7 @@ export default class Actor {
    * @memberof Actor
    */
   set a(n) {
-    this.position[3] = n;
+    this.pos[3] = n;
   }
 
   /**
@@ -139,7 +139,7 @@ export default class Actor {
    * @memberof Actor
    */
   set b(n) {
-    this.position[4] = n;
+    this.pos[4] = n;
   }
 
   /**
@@ -149,7 +149,51 @@ export default class Actor {
    * @memberof Actor
    */
   set c(n) {
-    this.position[5] = n;
+    this.pos[5] = n;
+  }
+
+  /**
+   * Returns the specified x and y with the actor's z, a, b, c position.
+   *
+   * @param {number} x
+   * @param {number} y
+   * @return {string} The actor's shifted position.
+   * @memberof Actor
+   */
+  getPosition(x, y) {
+    return `${x},${y},${this.z},${this.a},${this.b},${this.c}`;
+  }
+
+  /**
+   * Sets the specified array of numbers as the position of the actor.
+   *
+   * @param {number[]} position The position of the actor.
+   * @memberof Actor
+   */
+  set position(position) {
+    this.pos = position;
+  }
+
+  /**
+   * Returns the position of the actor as a comma separated string.
+   *
+   * @readonly
+   * @memberof Actor
+   */
+  get position() {
+    return this.pos.toString();
+  }
+
+  /**
+   * Returns true if the actor is at the position specified by a comma
+   * separated string.
+   *
+   * @param {string} position The position to check.
+   * @return {boolean} True if the actor is at the position.
+   * @memberof Actor
+   */
+  isAt(position) {
+    return this.position === position;
   }
 
   /**
@@ -167,14 +211,18 @@ export default class Actor {
     }
     this.path = [];
     new AStar(this.target[0], this.target[1], this.isPassable.bind(this))
-        .compute(this.position[0], this.position[1], (x, y) =>
-          this.path.push([x, y]),
-        );
+        .compute(this.x, this.y, (x, y) => this.path.push([x, y]));
     if (this.path.length < 2) {
       return false;
     }
-    this.position[0] = this.path[1][0];
-    this.position[1] = this.path[1][1];
+    const actor = this.world.actors.find(
+        (actor) => actor.x === this.path[1][0] && actor.y === this.path[1][1],
+    );
+    if (actor) {
+      return;
+    }
+    this.x = this.path[1][0];
+    this.y = this.path[1][1];
     return true;
   }
 
@@ -188,23 +236,7 @@ export default class Actor {
    * @memberof Actor
    */
   isPassable(x, y) {
-    const char =
-      this.map.get(`${x},${y},${this.z},${this.a},${this.b},${this.c}`);
-    return char !== 'A' && char !== 'B' && char !== 'C' && char !== undefined;
-  }
-
-  /**
-   * Returns true if the specified x,y position on the current z,a,b,c position
-   * of the actor is transparent for the actor;
-   *
-   * @param {number} x The x coordinate of the actor's position.
-   * @param {number} y The y coordinate of the actor's position.
-   * @return {boolean} Returns true if the specified position is transparent.
-   * @memberof Actor
-   */
-  isTransparent(x, y) {
-    const char =
-      this.map.get(`${x},${y},${this.z},${this.a},${this.b},${this.c}`);
+    const char = this.world.map.get(this.getPosition(x, y));
     return char !== 'A' && char !== 'B' && char !== 'C' && char !== undefined;
   }
 }
