@@ -291,5 +291,14 @@ function credits() {
     Unprepared ©2019 Joshua McLean 
     (mrjoshuamclean.com)
     Licensed under Creative Commons 
-    Attribution 4.0 International`);
+    Attribution 4.0 International
+    
+    
+    Font
+    
+    Free and free for personal use from 
+    dafont.com
+    /smalltypewriting-medium.font
+    /sv-basic-manual.font
+    /typori.font`);
 }
