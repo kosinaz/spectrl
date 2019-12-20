@@ -43,10 +43,12 @@ export default class HelpScene extends Scene {
       
       Controls
       
-      Move/attack with mouse/arrow/num/wasd.
-      Move upstairs/downstairs with enter.
-      Mute/unmute the music with minus.
+      Move/attack/trade with mouse/arrow/num/wasd keys.
+      Move upstairs/downstairs with mouse/enter key.
+      Mute/unmute the music with mouse/m key.
       
+
+
 
       >Back`);
   }
@@ -64,7 +66,7 @@ export default class HelpScene extends Scene {
         this.switchTo(this.game.menuScene);
       }
     } else if (event.type === 'mousedown') {
-      if (this.eventX > 1 && this.eventX < 6 && this.eventY === 35) {
+      if (this.eventX > 1 && this.eventX < 6 && this.eventY === 37) {
         this.switchTo(this.game.menuScene);
       }
     }

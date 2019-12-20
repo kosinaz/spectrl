@@ -52,10 +52,12 @@ export default class MenuScene extends Scene {
           .                    */*.     .,,,..    .,*.          .
           .                     ((*     .*/*.     .,*..         .
           .                     */*.   *.,/,.    .,**,.         .
-          . Made for the     .,,,,..   * .,.,.   , *. .,        .
+          .                  .,,,,..   * .,.,.   , *. .,        .
           .                .,**,..       .,,.    . *   *        .
-          . TEXT ONLY JAM  *  ,..       .,**,.                  .
+          . Made for the   *  ,..       .,**,.                  .
           .                            *  ,. ..                 .
+          . TEXT ONLY JAM                                       .
+          .                                                     .
           `);
   }
 

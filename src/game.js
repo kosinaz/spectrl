@@ -4,6 +4,7 @@ import WorldScene from './worldScene.js';
 import HelpScene from './helpScene.js';
 import CreditsScene from './creditsScene.js';
 import WinScene from './winScene.js';
+import FailScene from './failScene.js';
 
 /**
  * Represent the game core object.
@@ -24,5 +25,6 @@ Game.worldScene = new WorldScene(Game);
 Game.helpScene = new HelpScene(Game);
 Game.creditsScene = new CreditsScene(Game);
 Game.winScene = new WinScene(Game);
+Game.failScene = new FailScene(Game);
 Game.menuScene = new MenuScene(Game);
 Game.menuScene.start();

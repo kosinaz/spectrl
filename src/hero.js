@@ -21,7 +21,7 @@ export default class Hero extends Actor {
   constructor(world, position) {
     super(world, position);
     this.char = '@';
-    this.gold = 10;
+    this.gold = 0;
     this.trade = 0;
     this.explored = new Set();
     this.fov = new Set();
@@ -76,7 +76,7 @@ export default class Hero extends Actor {
     );
     if (actor) {
       if (actor.team === 0) {
-        console.log('damage the actor');
+        actor.weaken(this.damage * RNG.getUniformInt(1, 2));
         this.target = null;
       } else if (actor.team === 1) {
         this.trade = 5;
@@ -100,5 +100,14 @@ export default class Hero extends Actor {
       }
     });
     this.world.engine.unlock();
+  }
+
+  /**
+   * Opens the game over screen.
+   *
+   * @memberof Actor
+   */
+  kill() {
+    this.died = true;
   }
 }

@@ -1,3 +1,4 @@
+import {RNG} from '../lib/rot/index.js';
 import AStar from '../lib/rot/path/astar.js';
 
 /**
@@ -158,6 +159,20 @@ export default class Actor {
   }
 
   /**
+   * Decrease the actor's health with the specified value and kill him if
+   * needed.
+   *
+   * @param {number} value
+   * @memberof Actor
+   */
+  weaken(value) {
+    this.health -= value;
+    if (this.health < 1) {
+      this.kill();
+    }
+  }
+
+  /**
    * Returns the specified x and y with the actor's z, a, b, c position.
    *
    * @param {number} x
@@ -239,7 +254,7 @@ export default class Actor {
       return;
     }
     if (this.world.hero.isAtXY(this.path[1][0], this.path[1][1])) {
-      console.log('damage the hero');
+      this.world.hero.weaken(this.damage * RNG.getUniformInt(1, 2));
       return;
     } else {
       this.x = this.path[1][0];

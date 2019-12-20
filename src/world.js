@@ -2,7 +2,6 @@ import Simple from '../lib/rot/scheduler/simple.js';
 import {Engine, RNG} from '../lib/rot/index.js';
 import BacktrackerMaze from './backtrackermaze.js';
 import Hero from './hero.js';
-import Actor from './actor.js';
 import DividedMaze from '../lib/rot/map/dividedmaze.js';
 
 /**
@@ -38,9 +37,8 @@ export default class World {
     );
     this.createChambers(19, 13);
     this.createGates(19, 13);
-    this.hero = new Hero(this, '45,30,2,1,2,2');
+    this.hero = new Hero(this, '45,30,2,2,2,2');
     this.actors = [];
-    this.actors.push(new Actor(this, '47,30,2,1,2,2'));
     this.engine.start();
   }
 

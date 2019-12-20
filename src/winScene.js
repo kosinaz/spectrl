@@ -58,8 +58,10 @@ export default class WinScene extends Scene {
           . ..    .......*. .*   ,,,,...      ...               .
           .  .     .......,      * /. ,.        ..              .
           .  .     .......         ,  *           ..            . 
-          .>Back to main..                          .           .
-          .  .      ......                                      .
+          .  .      ......                          .           . 
+          .  .      ......                                      . 
+          .>Back to main..                                      .
+          .  .       .....                                      .
           `);
     this.game.display.setOptions({
       bg: '#000',
@@ -79,7 +81,7 @@ export default class WinScene extends Scene {
         this.switchTo(this.game.menuScene);
       }
     } else if (event.type === 'mousedown') {
-      if (this.eventX > 1 && this.eventX < 6 && this.eventY === 35) {
+      if (this.eventX > 1 && this.eventX < 14 && this.eventY === 37) {
         this.switchTo(this.game.menuScene);
       }
     }

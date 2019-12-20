@@ -31,6 +31,10 @@ export default class WorldScene extends Scene {
    */
   update() {
     this.game.display.clear();
+    if (this.world.hero.died) {
+      this.switchTo(this.game.failScene);
+      return;
+    }
     this.world.hero.explored.forEach((position) => {
       const p = position.split(',');
       if (
@@ -75,7 +79,7 @@ export default class WorldScene extends Scene {
     this.game.display.drawText(12, 0, `Damage: ${this.world.hero.damage}`);
     this.game.display.drawText(24, 0, `Gold: ${this.world.hero.gold}`);
     if (this.world.hero.trade) {
-      const item = ['', '', '', '', '', 'Health'][this.world.hero.trade];
+      const item = ['', '', '', '', '', 'health'][this.world.hero.trade];
       const gold = 3;
       if (this.world.hero.gold < gold) {
         this.game.display.drawText(
@@ -94,7 +98,7 @@ export default class WorldScene extends Scene {
       }
     } else if (this.world.hero.gift) {
       this.game.display.drawText(
-          0, 38, 'Here, have this health potion and take care!',
+          0, 38, 'Here, have this health potion and take care my friend!',
       );
       this.world.hero.gift = 0;
     }
@@ -168,7 +172,6 @@ export default class WorldScene extends Scene {
       this.world.hero.target = [this.eventX, this.eventY - 1];
       this.world.hero.moveToTargetAndUnlock();
     } else if (event.type === 'keydown') {
-      console.log(event.keyCode);
       if (this.world.hero.trade) {
         if (event.keyCode === 37) {
           this.selected = 0;
