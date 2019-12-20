@@ -76,7 +76,7 @@ export default class Hero extends Actor {
     );
     if (actor) {
       if (actor.team === 0) {
-        actor.weaken(this.damage * RNG.getUniformInt(1, 2));
+        actor.weaken(this.damage + RNG.getUniformInt(0, 1));
         this.target = null;
       } else if (actor.team === 1) {
         this.trade = 5;

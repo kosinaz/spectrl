@@ -254,7 +254,7 @@ export default class Actor {
       return;
     }
     if (this.world.hero.isAtXY(this.path[1][0], this.path[1][1])) {
-      this.world.hero.weaken(this.damage * RNG.getUniformInt(1, 2));
+      this.world.hero.weaken(this.damage + RNG.getUniformInt(1, 2));
       return;
     } else {
       this.x = this.path[1][0];
