@@ -68,7 +68,9 @@ export default class WorldScene extends Scene {
         this.game.display.draw(+p[0], +p[1] + 1, char, color, bg);
       }
     });
-    this.game.display.draw(54, 0, this.music.muted ? '-' : '~');
+    this.game.display.drawText(
+        45, 0, `Music: ${this.music.muted ? 'off' : 'on'}`,
+    );
     this.game.display.drawText(0, 0, `Health: ${this.world.hero.health}`);
     this.game.display.drawText(12, 0, `Damage: ${this.world.hero.damage}`);
     this.game.display.drawText(24, 0, `Gold: ${this.world.hero.gold}`);
@@ -106,16 +108,67 @@ export default class WorldScene extends Scene {
    */
   handleEvent(event) {
     super.handleEvent(event);
+    const char = this.world.map.get(this.world.hero.position);
     if (event.type === 'mouseup') {
       this.world.hero.target = null;
     } else if (event.type === 'mousedown') {
-      if (this.eventX === 54 && this.eventY === 0) {
+      if (this.eventX > 45 && this.eventY === 0) {
         this.music.muted = !this.music.muted;
-        this.game.display.draw(54, 0, this.music.muted ? '-' : '~');
+        this.update();
+        return;
+      }
+      if (this.world.hero.trade) {
+        if ([48, 49, 50].includes(this.eventX) && this.eventY === 38) {
+          this.world.hero.gold -= 3;
+          this.world.hero.health += 1;
+          this.world.hero.trade = 0;
+        }
+        this.world.hero.trade = 0;
+        this.update();
+        return;
+      }
+      if (this.world.hero.isAtXY(this.eventX, this.eventY - 1)) {
+        if (char === '<') {
+          this.world.hero.z += 1;
+          this.world.engine.unlock();
+          return;
+        } else if (char === '>') {
+          this.world.hero.z -= 1;
+          this.world.engine.unlock();
+          return;
+        } else if (char === '{') {
+          this.world.hero.a += 1;
+          this.world.engine.unlock();
+          return;
+        } else if (char === '}') {
+          this.world.hero.a -= 1;
+          this.world.engine.unlock();
+          return;
+        } else if (char === '[') {
+          this.world.hero.b += 1;
+          this.world.engine.unlock();
+          return;
+        } else if (char === ']') {
+          this.world.hero.b -= 1;
+          this.world.engine.unlock();
+          return;
+        } else if (char === '(') {
+          this.world.hero.c += 1;
+          this.world.engine.unlock();
+          return;
+        } else if (char === ')') {
+          this.world.hero.c -= 1;
+          this.world.engine.unlock();
+          return;
+        } else if (char === '^') {
+          this.switchTo(this.game.winScene);
+          return;
+        }
       }
       this.world.hero.target = [this.eventX, this.eventY - 1];
       this.world.hero.moveToTargetAndUnlock();
     } else if (event.type === 'keydown') {
+      console.log(event.keyCode);
       if (this.world.hero.trade) {
         if (event.keyCode === 37) {
           this.selected = 0;
@@ -133,12 +186,11 @@ export default class WorldScene extends Scene {
       }
       let x = this.world.hero.x;
       let y = this.world.hero.y;
-      if (event.keyCode === 109 || event.keyCode === 189) {
+      if (event.keyCode === 77) {
         this.music.muted = !this.music.muted;
-        this.game.display.draw(54, 0, this.music.muted ? '-' : '~');
+        this.update();
         return;
       } else if (event.keyCode === 13) {
-        const char = this.world.map.get(this.world.hero.position);
         if (char === '<') {
           this.world.hero.z += 1;
           this.world.engine.unlock();
