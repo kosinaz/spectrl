@@ -41,7 +41,7 @@ export default class Hero extends Actor {
       if (!this.explored.has(position)) {
         this.explored.add(position);
         const char = this.world.map.get(position);
-        if (!RNG.getUniformInt(0, 100) && char === '.') {
+        if (!RNG.getUniformInt(0, 250) && char === '.') {
           this.world.actors.push(new Actor(this.world, position));
         }
       }

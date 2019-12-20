@@ -282,6 +282,9 @@ export default class Actor {
    * @memberof Actor
    */
   kill() {
+    if (this.team === 0) {
+      this.world.hero.gold += 1;
+    }
     this.world.map.set(this.position, this.char);
     this.world.actors.splice(this.world.actors.indexOf(this), 1);
     this.world.scheduler.remove(this);
