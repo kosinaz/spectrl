@@ -19,6 +19,10 @@ export default class Actor {
     this.world = world;
     this.pos = position.split(',');
     this.char = ['a', 'b', 'c'][this.b];
+    this.health = (this.c + 1) * 3;
+    this.damage = this.z + 1;
+    this.speed = this.b + 1;
+    this.team = this.a;
     this.world.scheduler.add(this, true);
   }
 
@@ -28,8 +32,9 @@ export default class Actor {
    * @memberof Actor
    */
   act() {
-    console.log(this.target);
-    this.moveToTarget();
+    if (this.team === 0) {
+      this.moveToTarget();
+    }
   }
 
   /**
@@ -197,23 +202,35 @@ export default class Actor {
   }
 
   /**
+   * Returns true if the actor is at the specified x and y with the actor's z,
+   * a, b, c position.
+   *
+   * @param {number} x The x position to check.
+   * @param {number} y The y position to check.
+   * @return {boolean} True if the actor is at the position.
+   * @memberof Actor
+   */
+  isAtXY(x, y) {
+    return this.isAt(this.getPosition(x, y));
+  }
+
+  /**
    * Moves the actor towards the target.
    *
-   * @return {boolean} Returns true if the action was successful.
    * @memberof Actor
    */
   moveToTarget() {
     if (!this.target) {
-      return false;
+      return;
     }
     if (!this.isPassable(this.target[0], this.target[1])) {
-      return false;
+      return;
     }
     this.path = [];
     new AStar(this.target[0], this.target[1], this.isPassable.bind(this))
         .compute(this.x, this.y, (x, y) => this.path.push([x, y]));
     if (this.path.length < 2) {
-      return false;
+      return;
     }
     const actor = this.world.actors.find(
         (actor) => actor.x === this.path[1][0] && actor.y === this.path[1][1],
@@ -221,9 +238,13 @@ export default class Actor {
     if (actor) {
       return;
     }
-    this.x = this.path[1][0];
-    this.y = this.path[1][1];
-    return true;
+    if (this.world.hero.isAtXY(this.path[1][0], this.path[1][1])) {
+      console.log('damage the hero');
+      return;
+    } else {
+      this.x = this.path[1][0];
+      this.y = this.path[1][1];
+    }
   }
 
   /**
@@ -238,5 +259,16 @@ export default class Actor {
   isPassable(x, y) {
     const char = this.world.map.get(this.getPosition(x, y));
     return char !== 'A' && char !== 'B' && char !== 'C' && char !== undefined;
+  }
+
+  /**
+   * Kills the actor and leaves the remains on the map.
+   *
+   * @memberof Actor
+   */
+  kill() {
+    this.world.map.set(this.position, this.char);
+    this.world.actors.splice(this.world.actors.indexOf(this), 1);
+    this.world.scheduler.remove(this);
   }
 }

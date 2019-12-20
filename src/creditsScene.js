@@ -15,7 +15,6 @@ export default class CreditsScene extends Scene {
    */
   start() {
     super.start();
-    this.game.display.clear();
     this.game.display.drawText(23, 1, 'Credits');
     this.game.display.drawText(1, 3, `Code and ASCII art
 

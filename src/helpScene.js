@@ -15,7 +15,6 @@ export default class HelpScene extends Scene {
    */
   start() {
     super.start();
-    this.game.display.clear();
     this.game.display.drawText(25, 1, 'Help');
     this.game.display.drawText(1, 3, `Desription
 

@@ -1,6 +1,7 @@
 import {RNG} from '../lib/rot/index.js';
 import Actor from './actor.js';
 import PreciseShadowcasting from '../lib/rot/fov/precise-shadowcasting.js';
+import AStar from '../lib/rot/path/astar.js';
 
 /**
  * Represents an actor that can be controlled by the player.
@@ -31,6 +32,7 @@ export default class Hero extends Actor {
    * @memberof Hero
    */
   act() {
+    this.fov = new Set();
     this.ps.compute(this.x, this.y, 11, (x, y) => {
       this.fov.add(`${x},${y}`);
       const position = this.getPosition(x, y);
@@ -55,59 +57,45 @@ export default class Hero extends Actor {
    * @memberof Hero
    */
   moveToTargetAndUnlock() {
-    if (this.moveToTarget()) {
-      this.world.engine.unlock();
+    if (!this.target) {
+      return;
     }
-  }
-
-  /**
- * Displays the victory screen.
- *
- */
-  win() {
-    this.won = true;
-    this.display.clear();
-    this.display.drawText(
-        0,
-        0,
-        ` .%#*,,****//**,,,,,,,............................     .
-          .#**//*,,,,*,,,*,,.................CONGRATULATIONS!   .
-          .(*//*,**/***,.,,,,,,,,.............                  .
-          .*,*/,,,,**//*,..,*****/**,,...Arakhon ascended to the.
-          .*/**/**,***/,,,,,,****(#,,,......highest existense!  .
-          .,/,****,****,,,...,///****,....................      .
-          .,/*,*******/*...,...///**,.........................  .
-          .,**,*,*****/**,...,,///*,...... ......................
-          .,,**,*,,***///*/***////*..........     ...............
-          .,,**,,,,,,*///(/////****..............          ......
-          .,,**,.,,,,,*///(((/////**,...............            .
-          .,.,*,,.,,,,,,,**((///(//****.....     .....          .
-          .,.,*,,..,,,,,,,*/(//////////*,......       ....      .
-          .,..,,,..,,.....*//////**(((/*,.......           ...  .
-          .,..,,,,..,,....,((///***/((//*,.   ....            ...
-          .,...,,,,.......*((///*,,*((((/...     ..             .
-          ......,,,...**,*/(((/**,,,/(#(*....                   .
-          ......,,,,///////((((/*,,*/##/,......                 .
-          ......,,,////////(((//*,**(((/,   ....                .
-          ........,///**((((((/////(((//.*.   ...               .
-          ........./(/*/((/(///////////**..*     ..             .
-          .........,((*/((/(/*,*/////***/.*.. ,    ..           .
-          ........,*//**//(//*,,//////*////*.**                 .
-          ......,*//**,.*//(/*,,*////*,*///**** *               .
-          ......//(/*,..**/((*,,*/(//**..,///****               .
-          .....,/(/*,....*///*,,./(//*,.....****, *             .
-          .... ./*,,,.....*/*,,..,((**,..... ***.*              .
-          ....  ,..*......//*,... */***,......****              .
-          ....   ........*(/,,... ,*/***.......//**.      .     .
-          . ..   .......*//*,,....*/**,,  .... ,**,.*..//,      .
-          . ..   .......*//*,....,*//*,.    ...  ,******        .
-          . ..    ......,/,..,*..**//*,.     ...                .
-          . ..    .......*. .*   ,,,,...      ...               .
-          .  .     .......,      * /. ,.        ..              .
-          .  .     .......         ,  *           ..            . 
-          .  .      ......                          .           .
-          .  .      ......                                      .
-          .  .      ......                                      .
-          `);
+    if (!this.isPassable(this.target[0], this.target[1])) {
+      return;
+    }
+    this.path = [];
+    new AStar(this.target[0], this.target[1], this.isPassable.bind(this))
+        .compute(this.x, this.y, (x, y) => this.path.push([x, y]));
+    if (this.path.length < 2) {
+      return;
+    }
+    const actor = this.world.actors.find((actor) =>
+      actor.isAt(this.getPosition(this.path[1][0], this.path[1][1])),
+    );
+    if (actor) {
+      if (actor.team === 0) {
+        console.log('damage the actor');
+        this.target = null;
+      } else if (actor.team === 1) {
+        console.log('trade with the actor');
+        this.target = null;
+        actor.kill();
+      } else if (actor.team === 2) {
+        console.log('ask for help from the actor');
+        this.target = null;
+        actor.kill();
+      }
+    } else {
+      this.x = this.path[1][0];
+      this.y = this.path[1][1];
+    }
+    this.ps.compute(this.x, this.y, 11, (x, y) => {
+      const actor = this.world.actors.find((actor) =>
+        actor.isAt(this.getPosition(x, y)));
+      if (actor) {
+        actor.target = [this.world.hero.x, this.world.hero.y];
+      }
+    });
+    this.world.engine.unlock();
   }
 }

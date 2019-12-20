@@ -35,9 +35,9 @@ export default class World {
         [0, 0, 0, 0, 0, 0],
         [2, 2, 2, 2, 2, 2],
     );
-    this.createChambers(19, 13);
-    this.createGates(19, 13);
-    this.hero = new Hero(this, '45,30,2,2,2,2');
+    this.createChambers(23, 13);
+    this.createGates(23, 13);
+    this.hero = new Hero(this, '55,30,2,2,2,2');
     this.actors = [];
     this.engine.start();
   }

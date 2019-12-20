@@ -42,28 +42,33 @@ export default class WorldScene extends Scene {
         let color = '#444';
         let bg = '#000';
         if (this.world.hero.fov.has(`${p[0]},${p[1]}`)) {
-          color = '#fff';
-          const brightness = ['a', '8', '6'][this.world.hero.z];
-          const red = this.world.hero.a === 0 ? brightness : '0';
-          const green = this.world.hero.a === 1 ? brightness : '0';
-          const blue = this.world.hero.a === 2 ? brightness : '0';
-          bg = `#${red}${green}${blue}`;
+          const red = this.world.hero.a === 0 ? 'f' : '8';
+          const green = this.world.hero.a === 1 ? 'f' : '8';
+          const blue = this.world.hero.a === 2 ? 'f' : '8';
+          color = `#${red}${green}${blue}`;
+          const bgbrightness = ['a', '8', '6'][this.world.hero.z];
+          const bgred = this.world.hero.a === 0 ? bgbrightness : '0';
+          const bggreen = this.world.hero.a === 1 ? bgbrightness : '0';
+          const bgblue = this.world.hero.a === 2 ? bgbrightness : '0';
+          bg = `#${bgred}${bggreen}${bgblue}`;
           this.game.display.setOptions({
             fontFamily: ['ba', 'sm', 'ty'][this.world.hero.c],
           });
           const actor = this.world.actors.find((actor) => actor.isAt(position));
           if (actor) {
+            color = ('#fff');
             char = actor.char;
-            actor.target = [this.world.hero.x, this.world.hero.y];
           }
           if (this.world.hero.isAt(position)) {
+            color = ('#fff');
             char = '@';
           }
         }
-        this.game.display.draw(+p[0], +p[1], char, color, bg);
+        this.game.display.draw(+p[0], +p[1] + 1, char, color, bg);
       }
     });
-    this.game.display.draw(54, 0, this.music.muted ? '-' : '~', '#fff', '#000');
+    this.game.display.draw(66, 0, this.music.muted ? '-' : '~');
+    this.game.display.drawText(0, 0, 'Health:', '#fff', '#000');
   }
 
   /**
@@ -77,23 +82,18 @@ export default class WorldScene extends Scene {
     if (event.type === 'mouseup') {
       this.world.hero.target = null;
     } else if (event.type === 'mousedown') {
-      if (this.eventX === 54 && this.eventY === 0) {
+      if (this.eventX === 66 && this.eventY === 0) {
         this.music.muted = !this.music.muted;
-        const char = this.music.muted ? '-' : '~';
-        this.game.display.draw(54, 0, char, '#fff', '#000');
+        this.game.display.draw(66, 0, this.music.muted ? '-' : '~');
       }
-      this.world.hero.target = [this.eventX, this.eventY];
+      this.world.hero.target = [this.eventX, this.eventY - 1];
       this.world.hero.moveToTargetAndUnlock();
     } else if (event.type === 'keydown') {
       let x = this.world.hero.x;
       let y = this.world.hero.y;
       if (event.keyCode === 109 || event.keyCode === 189) {
         this.music.muted = !this.music.muted;
-        this.display.draw(
-            54,
-            0,
-            this.music.muted ? '-' : '~', '#fff', '#000',
-        );
+        this.game.display.draw(66, 0, this.music.muted ? '-' : '~');
         return;
       } else if (event.keyCode === 13) {
         const char = this.world.map.get(this.world.hero.position);
@@ -130,7 +130,7 @@ export default class WorldScene extends Scene {
           this.world.engine.unlock();
           return;
         } else if (char === '^') {
-          this.win();
+          this.switchTo(this.game.winScene);
         }
       }
       if ([37, 65, 100].includes(event.keyCode)) {
