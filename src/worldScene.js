@@ -16,6 +16,7 @@ export default class WorldScene extends Scene {
    */
   start() {
     super.start();
+    this.selected = 0;
     this.music = new Audio('./music/unprepared.ogg');
     this.music.loop = true;
     this.music.play();
@@ -68,7 +69,33 @@ export default class WorldScene extends Scene {
       }
     });
     this.game.display.draw(66, 0, this.music.muted ? '-' : '~');
-    this.game.display.drawText(0, 0, 'Health:', '#fff', '#000');
+    this.game.display.drawText(0, 0, `Health: ${this.world.hero.health}`);
+    this.game.display.drawText(12, 0, `Damage: ${this.world.hero.damage}`);
+    this.game.display.drawText(24, 0, `Gold: ${this.world.hero.gold}`);
+    if (this.world.hero.trade) {
+      const item = ['', '', '', '', '', 'Health'][this.world.hero.trade];
+      const gold = 3;
+      if (this.world.hero.gold < gold) {
+        this.game.display.drawText(
+            0, 38, 'You don\'t have enough gold to trade with me.',
+        );
+        this.world.hero.trade = 0;
+        return;
+      }
+      this.game.display.drawText(
+          0, 38, `Do you want a ${item} potion for ${gold} gold?`,
+      );
+      if (this.selected) {
+        this.game.display.drawText(60, 38, 'Yes >No');
+      } else {
+        this.game.display.drawText(59, 38, '>Yes  No');
+      }
+    } else if (this.world.hero.gift) {
+      this.game.display.drawText(
+          0, 38, 'Here, have this health potion and take care!',
+      );
+      this.world.hero.gift = 0;
+    }
   }
 
   /**
@@ -89,6 +116,21 @@ export default class WorldScene extends Scene {
       this.world.hero.target = [this.eventX, this.eventY - 1];
       this.world.hero.moveToTargetAndUnlock();
     } else if (event.type === 'keydown') {
+      if (this.world.hero.trade) {
+        if (event.keyCode === 37) {
+          this.selected = 0;
+        } else if (event.keyCode === 39) {
+          this.selected = 1;
+        } else if (event.keyCode === 13) {
+          if (!this.selected) {
+            this.world.hero.gold -= 3;
+            this.world.hero.health += 1;
+          }
+          this.world.hero.trade = 0;
+        }
+        this.update();
+        return;
+      }
       let x = this.world.hero.x;
       let y = this.world.hero.y;
       if (event.keyCode === 109 || event.keyCode === 189) {

@@ -21,6 +21,8 @@ export default class Hero extends Actor {
   constructor(world, position) {
     super(world, position);
     this.char = '@';
+    this.gold = 10;
+    this.trade = 0;
     this.explored = new Set();
     this.fov = new Set();
     this.ps = new PreciseShadowcasting(this.isPassable.bind(this));
@@ -77,11 +79,12 @@ export default class Hero extends Actor {
         console.log('damage the actor');
         this.target = null;
       } else if (actor.team === 1) {
-        console.log('trade with the actor');
+        this.trade = 5;
         this.target = null;
         actor.kill();
       } else if (actor.team === 2) {
-        console.log('ask for help from the actor');
+        this.gift = 5;
+        this.health += 1;
         this.target = null;
         actor.kill();
       }
