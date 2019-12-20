@@ -68,7 +68,7 @@ export default class WorldScene extends Scene {
         this.game.display.draw(+p[0], +p[1] + 1, char, color, bg);
       }
     });
-    this.game.display.draw(66, 0, this.music.muted ? '-' : '~');
+    this.game.display.draw(54, 0, this.music.muted ? '-' : '~');
     this.game.display.drawText(0, 0, `Health: ${this.world.hero.health}`);
     this.game.display.drawText(12, 0, `Damage: ${this.world.hero.damage}`);
     this.game.display.drawText(24, 0, `Gold: ${this.world.hero.gold}`);
@@ -86,9 +86,9 @@ export default class WorldScene extends Scene {
           0, 38, `Do you want a ${item} potion for ${gold} gold?`,
       );
       if (this.selected) {
-        this.game.display.drawText(60, 38, 'Yes >No');
+        this.game.display.drawText(48, 38, 'Yes >No');
       } else {
-        this.game.display.drawText(59, 38, '>Yes  No');
+        this.game.display.drawText(47, 38, '>Yes  No');
       }
     } else if (this.world.hero.gift) {
       this.game.display.drawText(
@@ -109,9 +109,9 @@ export default class WorldScene extends Scene {
     if (event.type === 'mouseup') {
       this.world.hero.target = null;
     } else if (event.type === 'mousedown') {
-      if (this.eventX === 66 && this.eventY === 0) {
+      if (this.eventX === 54 && this.eventY === 0) {
         this.music.muted = !this.music.muted;
-        this.game.display.draw(66, 0, this.music.muted ? '-' : '~');
+        this.game.display.draw(54, 0, this.music.muted ? '-' : '~');
       }
       this.world.hero.target = [this.eventX, this.eventY - 1];
       this.world.hero.moveToTargetAndUnlock();
@@ -135,7 +135,7 @@ export default class WorldScene extends Scene {
       let y = this.world.hero.y;
       if (event.keyCode === 109 || event.keyCode === 189) {
         this.music.muted = !this.music.muted;
-        this.game.display.draw(66, 0, this.music.muted ? '-' : '~');
+        this.game.display.draw(54, 0, this.music.muted ? '-' : '~');
         return;
       } else if (event.keyCode === 13) {
         const char = this.world.map.get(this.world.hero.position);

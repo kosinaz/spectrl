@@ -14,7 +14,7 @@ export default class Game {
 
 }
 Game.display = new Display({
-  width: 67,
+  width: 55,
   height: 39,
   forceSquareRatio: true,
   fontFamily: 'ty',
